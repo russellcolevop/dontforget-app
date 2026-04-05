@@ -1,0 +1,66 @@
+{
+  "name": "DontForget - Hotel Guest Reminder",
+  "short_name": "DontForget",
+  "description": "Never leave your belongings behind. Get real-time reminders when you leave your hotel room.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#0D4F4F",
+  "orientation": "portrait-primary",
+  "categories": ["travel", "utilities"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%230D4F4F'/><text x='96' y='140' font-size='100' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'>✓</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%230D4F4F'/><text x='256' y='380' font-size='260' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'>✓</text></svg>",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><circle cx='96' cy='96' r='96' fill='%230D4F4F'/><text x='96' y='140' font-size='100' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'>✓</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 540 720'><rect width='540' height='720' fill='%23f5f5f5'/><text x='270' y='360' font-size='60' text-anchor='middle' fill='%230D4F4F' font-family='Arial'>DontForget</text></svg>",
+      "sizes": "540x720",
+      "type": "image/svg+xml",
+      "form_factor": "narrow"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "New Reminder",
+      "short_name": "Reminder",
+      "description": "Create a new reminder for your items",
+      "url": "/?mode=new-reminder",
+      "icons": [
+        {
+          "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' rx='40' fill='%230D4F4F'/><text x='96' y='140' font-size='100' font-weight='bold' text-anchor='middle' fill='white' font-family='Arial'>✓</text></svg>",
+          "sizes": "192x192",
+          "type": "image/svg+xml"
+        }
+      ]
+    }
+  ],
+  "share_target": {
+    "action": "/share",
+    "method": "POST",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "prefer_related_applications": false
+}
