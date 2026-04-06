@@ -320,13 +320,43 @@
     .settings-section { background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
     .settings-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
 
-    .slider-container { display: flex; align-items: center; gap: 12px; }
-    .slider { flex: 1; height: 6px; border-radius: 3px; background: var(--border); outline: none; -webkit-appearance: none; appearance: none; }
-    .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; }
-    .slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; border: none; }
-    .radius-value { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 45px; text-align: right; }
-
     /* Notification Fired */
+    .sms-anim-container { position: relative; width: 120px; height: 120px; margin: 0 auto 16px; }
+    .sms-envelope {
+      width: 80px; height: 60px; background: var(--success); border-radius: 8px; position: absolute;
+      top: 50%; left: 50%; transform: translate(-50%, -50%); animation: envelopePop 0.6s ease-out forwards;
+      box-shadow: 0 8px 24px rgba(76,175,80,0.3);
+    }
+    .sms-envelope::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      border-left: 40px solid transparent; border-right: 40px solid transparent;
+      border-top: 30px solid #43A047;
+    }
+    .sms-checkmark {
+      position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 48px; color: var(--success); opacity: 0; animation: checkPop 0.5s ease-out 0.5s forwards;
+    }
+    .sms-ripple {
+      position: absolute; top: 50%; left: 50%; width: 80px; height: 80px;
+      border: 3px solid var(--success); border-radius: 50%; opacity: 0;
+      transform: translate(-50%, -50%) scale(0.5);
+      animation: rippleOut 1.2s ease-out 0.3s forwards;
+    }
+    .sms-ripple:nth-child(2) { animation-delay: 0.6s; }
+    @keyframes envelopePop {
+      0% { transform: translate(-50%, -50%) scale(0) rotate(-15deg); opacity: 0; }
+      60% { transform: translate(-50%, -50%) scale(1.1) rotate(3deg); opacity: 1; }
+      100% { transform: translate(-50%, -50%) scale(1) rotate(0); opacity: 1; }
+    }
+    @keyframes checkPop {
+      0% { opacity: 0; transform: translate(-50%, -80%) scale(0); }
+      60% { opacity: 1; transform: translate(-50%, -80%) scale(1.2); }
+      100% { opacity: 1; transform: translate(-50%, -80%) scale(1); }
+    }
+    @keyframes rippleOut {
+      0% { transform: translate(-50%, -50%) scale(0.5); opacity: 0.6; }
+      100% { transform: translate(-50%, -50%) scale(2); opacity: 0; }
+    }
     .notification-state { text-align: center; }
     .notification-items { background: #f9f9f9; border-radius: 12px; padding: 16px; margin: 20px 0; text-align: left; }
     .notification-items-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 8px; }
@@ -502,6 +532,12 @@
       <div class="screen" id="screen-fired">
         <div class="screen-content">
           <div class="notification-state">
+            <div class="sms-anim-container">
+              <div class="sms-ripple"></div>
+              <div class="sms-ripple"></div>
+              <div class="sms-envelope"></div>
+              <div class="sms-checkmark">✓</div>
+            </div>
             <div class="status-title">We just texted you a reminder!</div>
             <div class="sms-sent-badge">SMS Sent</div>
             <p style="color: var(--text-light); margin-top: 12px;">Check your phone — make sure you have everything.</p>
