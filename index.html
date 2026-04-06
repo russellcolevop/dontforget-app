@@ -480,18 +480,10 @@
           <div class="geofence-status" id="geofence-status">
             <div class="distance-display">
               <span class="status-dot" id="status-dot"></span>
-              <span id="distance-display">Initializing location...</span>
+              <span id="distance-display">Tracking your location...</span>
             </div>
             <div class="status-message success" id="status-message">
               You're in range — we'll text you when you leave
-            </div>
-          </div>
-
-          <div class="settings-section">
-            <div class="settings-title">Geofence Radius</div>
-            <div class="slider-container">
-              <input type="range" class="slider" id="radius-slider" min="15" max="100" value="30" oninput="app.updateRadius(this.value)">
-              <span class="radius-value" id="radius-value">30m</span>
             </div>
           </div>
 
@@ -789,31 +781,30 @@
         const r = this.geofence.radius;
         const pct = distance / r;
 
-        el.textContent = 'You\'re ' + d + 'm from your room (fence: ' + r + 'm)';
         geo.classList.remove('warning', 'alert');
         dot.classList.remove('warning', 'alert');
 
         if (distance > r) {
+          el.textContent = 'It looks like you\'re leaving!';
           geo.classList.add('alert');
           dot.classList.add('alert');
           msg.className = 'status-message';
           msg.style.color = '#F44336';
-          msg.textContent = 'You have left your room area!';
+          msg.textContent = 'Sending your reminder now...';
         } else if (pct > 0.7) {
+          el.textContent = 'Monitoring your location...';
           geo.classList.add('warning');
           dot.classList.add('warning');
           msg.className = 'status-message warning';
           msg.textContent = 'You\'re moving away from your room...';
         } else {
+          el.textContent = 'Monitoring your location...';
           msg.className = 'status-message success';
           msg.textContent = 'You\'re in range — we\'ll text you when you leave';
         }
       },
 
-      updateRadius(val) {
-        this.geofence.setRadius(parseInt(val));
-        document.getElementById('radius-value').textContent = val + 'm';
-      },
+      // Radius is fixed at 30m — no guest-facing control needed
 
       async fireReminder() {
         const items = this.getSelectedItemLabels();
