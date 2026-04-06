@@ -8,15 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="DontForget">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="manifest" href="manifest.json">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230D4F4F'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>✓</text></svg>">
   <title>DontForget</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
       --primary: #0D4F4F;
@@ -62,28 +58,12 @@
       position: relative;
     }
 
-    .screen {
-      display: none;
-      flex: 1;
-      overflow-y: auto;
-      padding: 0;
-      animation: slideIn 0.3s ease-out;
-    }
-
-    .screen.active {
-      display: flex;
-      flex-direction: column;
-    }
+    .screen { display: none; flex: 1; overflow-y: auto; padding: 0; animation: slideIn 0.3s ease-out; }
+    .screen.active { display: flex; flex-direction: column; }
 
     @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .screen-content {
@@ -94,50 +74,16 @@
       overflow-y: auto;
     }
 
-    .screen-content::-webkit-scrollbar {
-      width: 4px;
-    }
+    .screen-content::-webkit-scrollbar { width: 4px; }
+    .screen-content::-webkit-scrollbar-track { background: transparent; }
+    .screen-content::-webkit-scrollbar-thumb { background: #ccc; border-radius: 2px; }
 
-    .screen-content::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .screen-content::-webkit-scrollbar-thumb {
-      background: #ccc;
-      border-radius: 2px;
-    }
-
-    /* SCREEN 1: Welcome */
-    .welcome-header {
-      text-align: center;
-      margin-bottom: 40px;
-    }
-
-    .hotel-name {
-      font-size: 28px;
-      font-weight: 600;
-      color: var(--primary);
-      margin-bottom: 16px;
-    }
-
-    .app-logo {
-      font-size: 64px;
-      margin: 20px 0;
-    }
-
-    .tagline {
-      font-size: 24px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 12px;
-    }
-
-    .subtitle {
-      font-size: 14px;
-      color: var(--text-light);
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
+    /* Welcome */
+    .welcome-header { text-align: center; margin-bottom: 40px; }
+    .hotel-name { font-size: 28px; font-weight: 600; color: var(--primary); margin-bottom: 16px; }
+    .app-logo { font-size: 64px; margin: 20px 0; }
+    .tagline { font-size: 24px; font-weight: 600; color: var(--text); margin-bottom: 12px; }
+    .subtitle { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 30px; }
 
     .button-primary {
       background: var(--primary);
@@ -155,21 +101,9 @@
       justify-content: center;
       gap: 8px;
     }
-
-    .button-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 16px rgba(13, 79, 79, 0.3);
-    }
-
-    .button-primary:active {
-      transform: translateY(0);
-    }
-
-    .button-primary:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-      transform: none;
-    }
+    .button-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(13, 79, 79, 0.3); }
+    .button-primary:active { transform: translateY(0); }
+    .button-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
     .button-secondary {
       background: transparent;
@@ -183,11 +117,7 @@
       transition: all 0.3s ease;
       min-height: 54px;
     }
-
-    .button-secondary:hover {
-      background: var(--primary);
-      color: white;
-    }
+    .button-secondary:hover { background: var(--primary); color: white; }
 
     .powered-by {
       text-align: center;
@@ -207,129 +137,64 @@
       border-radius: 8px;
       margin-top: 16px;
       cursor: pointer;
-      transition: all 0.3s ease;
     }
+    .install-banner.show { display: block; }
 
-    .install-banner.show {
+    /* Phone Input Screen */
+    .screen-header { font-size: 24px; font-weight: 700; color: var(--primary); margin-bottom: 8px; margin-top: 0; }
+    .screen-subheader { font-size: 14px; color: var(--text-light); line-height: 1.6; margin-bottom: 28px; }
+
+    .phone-input-group { margin-bottom: 24px; }
+    .phone-input-group label {
       display: block;
-    }
-
-    .install-banner:hover {
-      box-shadow: 0 4px 12px rgba(13, 79, 79, 0.3);
-    }
-
-    /* SCREEN 2: Permissions */
-    .permissions-container {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-    }
-
-    .screen-header {
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 28px;
-      margin-top: 0;
-    }
-
-    .permission-card {
-      background: #f9f9f9;
-      border: 2px solid var(--border);
-      border-radius: 16px;
-      padding: 24px;
-      margin-bottom: 16px;
-      transition: all 0.3s ease;
-    }
-
-    .permission-card.granted {
-      background: var(--green-light);
-      border-color: var(--success);
-    }
-
-    .permission-card.denied {
-      background: #fff3e0;
-      border-color: var(--warning);
-    }
-
-    .permission-header {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 12px;
-    }
-
-    .permission-icon {
-      font-size: 32px;
-      width: 40px;
-      height: 40px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .permission-title {
-      font-size: 16px;
+      font-size: 14px;
       font-weight: 600;
       color: var(--text);
+      margin-bottom: 8px;
     }
 
-    .permission-status {
-      font-size: 20px;
-      margin-left: auto;
-      transition: all 0.3s ease;
+    .phone-input {
+      width: 100%;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      padding: 16px;
+      font-size: 18px;
+      letter-spacing: 0.5px;
+      transition: border-color 0.3s ease;
     }
+    .phone-input:focus { outline: none; border-color: var(--primary); }
 
-    .permission-description {
-      font-size: 14px;
+    .phone-note {
+      font-size: 13px;
       color: var(--text-light);
-      margin-bottom: 16px;
+      margin-top: 8px;
       line-height: 1.5;
     }
 
-    .permission-warning {
+    .sms-preview {
+      background: #f0faf0;
+      border: 2px solid var(--success);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .sms-preview-title {
       font-size: 13px;
-      color: var(--warning);
-      background: #fff3e0;
-      padding: 12px;
-      border-radius: 8px;
-      margin-top: 12px;
-      display: none;
-    }
-
-    .permission-warning.show {
-      display: block;
-    }
-
-    .permission-button {
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 16px;
-      border-radius: 8px;
-      font-size: 14px;
       font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      transition: all 0.3s ease;
+      color: var(--success);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .sms-preview-body {
+      font-size: 14px;
+      color: var(--text);
+      line-height: 1.6;
+      font-style: italic;
     }
 
-    .permission-button:hover {
-      opacity: 0.9;
-    }
-
-    .permission-button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-
-    .permissions-footer {
-      margin-top: auto;
-      padding-top: 24px;
-    }
-
-    /* SCREEN 3: Item Checklist */
+    /* Item Checklist */
     .items-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -353,53 +218,26 @@
       justify-content: center;
       gap: 8px;
     }
-
-    .item-card:hover {
-      border-color: var(--primary);
-      background: #f0f0f0;
-    }
-
+    .item-card:hover { border-color: var(--primary); background: #f0f0f0; }
     .item-card.selected {
       background: var(--green-light);
       border-color: var(--success);
       box-shadow: 0 4px 12px rgba(76, 175, 80, 0.2);
     }
 
-    .item-emoji {
-      font-size: 32px;
-    }
+    .item-emoji { font-size: 32px; }
+    .item-label { font-size: 13px; font-weight: 500; color: var(--text); }
+    .item-card.selected .item-label { color: var(--success); font-weight: 600; }
 
-    .item-label {
-      font-size: 13px;
-      font-weight: 500;
-      color: var(--text);
-    }
-
-    .item-card.selected .item-label {
-      color: var(--success);
-      font-weight: 600;
-    }
-
-    .custom-item-input {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 24px;
-    }
-
+    .custom-item-input { display: flex; gap: 8px; margin-bottom: 24px; }
     .custom-item-input input {
       flex: 1;
       border: 2px solid var(--border);
       border-radius: 8px;
       padding: 12px;
       font-size: 14px;
-      transition: border-color 0.3s ease;
     }
-
-    .custom-item-input input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
-
+    .custom-item-input input:focus { outline: none; border-color: var(--primary); }
     .custom-item-input button {
       background: var(--primary);
       color: white;
@@ -409,11 +247,6 @@
       font-size: 14px;
       font-weight: 600;
       cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .custom-item-input button:hover {
-      opacity: 0.9;
     }
 
     .progress-indicator {
@@ -425,41 +258,17 @@
       color: var(--text-light);
       text-align: center;
     }
+    .progress-indicator strong { color: var(--primary); font-weight: 600; }
 
-    .progress-indicator strong {
-      color: var(--primary);
-      font-weight: 600;
-    }
-
-    /* SCREEN 4: Active Monitoring */
-    .status-header {
-      text-align: center;
-      margin-bottom: 32px;
-    }
-
-    .checkmark-icon {
-      font-size: 48px;
-      margin: 20px 0;
-      animation: bounce 2s infinite;
-    }
-
+    /* Active Monitoring */
+    .status-header { text-align: center; margin-bottom: 32px; }
+    .checkmark-icon { font-size: 48px; margin: 20px 0; animation: bounce 2s infinite; }
     @keyframes bounce {
       0%, 100% { transform: translateY(0); }
       50% { transform: translateY(-10px); }
     }
-
-    .status-title {
-      font-size: 22px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 8px;
-    }
-
-    .room-number {
-      font-size: 14px;
-      color: var(--text-light);
-      margin-bottom: 24px;
-    }
+    .status-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+    .room-number { font-size: 14px; color: var(--text-light); margin-bottom: 24px; }
 
     .geofence-status {
       background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
@@ -468,16 +277,8 @@
       padding: 20px;
       margin-bottom: 20px;
     }
-
-    .geofence-status.warning {
-      background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
-      border-color: var(--warning);
-    }
-
-    .geofence-status.alert {
-      background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
-      border-color: var(--error);
-    }
+    .geofence-status.warning { background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%); border-color: var(--warning); }
+    .geofence-status.alert { background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%); border-color: var(--error); }
 
     .distance-display {
       font-size: 16px;
@@ -489,213 +290,68 @@
       gap: 8px;
     }
 
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
+    .status-dot.warning { background: var(--warning); }
+    .status-dot.alert { background: var(--error); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
+
+    .status-message { font-size: 13px; color: var(--text-light); line-height: 1.5; }
+    .status-message.success { color: var(--success); font-weight: 500; }
+    .status-message.warning { color: var(--warning); font-weight: 500; }
+
+    .items-summary { background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .items-summary-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 8px; }
+    .items-summary-list { font-size: 13px; color: var(--text); line-height: 1.6; }
+
+    .sms-indicator {
+      background: #e3f2fd;
+      border: 2px solid #2196F3;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    .sms-indicator-text { font-size: 14px; color: #1565C0; font-weight: 500; }
+
+    .controls-group { display: flex; gap: 12px; margin-bottom: 16px; }
+    .controls-group button { flex: 1; }
+    .button-small { padding: 12px 16px; font-size: 14px; min-height: 44px; }
+
+    .settings-section { background: #f9f9f9; border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+    .settings-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 12px; display: flex; align-items: center; gap: 6px; }
+
+    .slider-container { display: flex; align-items: center; gap: 12px; }
+    .slider { flex: 1; height: 6px; border-radius: 3px; background: var(--border); outline: none; -webkit-appearance: none; appearance: none; }
+    .slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; }
+    .slider::-moz-range-thumb { width: 20px; height: 20px; border-radius: 50%; background: var(--primary); cursor: pointer; border: none; }
+    .radius-value { font-size: 13px; font-weight: 600; color: var(--primary); min-width: 45px; text-align: right; }
+
+    /* Notification Fired */
+    .notification-state { text-align: center; }
+    .notification-items { background: #f9f9f9; border-radius: 12px; padding: 16px; margin: 20px 0; text-align: left; }
+    .notification-items-title { font-size: 13px; font-weight: 600; color: var(--text-light); margin-bottom: 8px; }
+    .notification-items-list { font-size: 14px; color: var(--text); line-height: 1.8; }
+
+    .sms-sent-badge {
       background: var(--success);
-      animation: pulse 2s infinite;
-    }
-
-    .status-dot.warning {
-      background: var(--warning);
-    }
-
-    .status-dot.alert {
-      background: var(--error);
-    }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.5; }
-    }
-
-    .status-message {
-      font-size: 13px;
-      color: var(--text-light);
-      line-height: 1.5;
-    }
-
-    .status-message.success {
-      color: var(--success);
-      font-weight: 500;
-    }
-
-    .status-message.warning {
-      color: var(--warning);
-      font-weight: 500;
-    }
-
-    .items-summary {
-      background: #f9f9f9;
+      color: white;
+      padding: 12px 20px;
       border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-
-    .items-summary-title {
-      font-size: 13px;
+      font-size: 16px;
       font-weight: 600;
-      color: var(--text-light);
-      margin-bottom: 8px;
-    }
-
-    .items-summary-list {
-      font-size: 13px;
-      color: var(--text);
-      line-height: 1.6;
-    }
-
-    .controls-group {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .controls-group button {
-      flex: 1;
-    }
-
-    .button-small {
-      padding: 12px 16px;
-      font-size: 14px;
-      min-height: 44px;
-    }
-
-    .settings-section {
-      background: #f9f9f9;
-      border-radius: 12px;
-      padding: 16px;
-      margin-bottom: 20px;
-    }
-
-    .settings-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-light);
-      margin-bottom: 12px;
-      display: flex;
+      margin: 16px 0;
+      display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 8px;
     }
 
-    .slider-container {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .slider {
-      flex: 1;
-      height: 6px;
-      border-radius: 3px;
-      background: var(--border);
-      outline: none;
-      -webkit-appearance: none;
-      appearance: none;
-    }
-
-    .slider::-webkit-slider-thumb {
-      -webkit-appearance: none;
-      appearance: none;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary);
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .slider::-webkit-slider-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 2px 8px rgba(13, 79, 79, 0.3);
-    }
-
-    .slider::-moz-range-thumb {
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary);
-      cursor: pointer;
-      border: none;
-      transition: all 0.3s ease;
-    }
-
-    .slider::-moz-range-thumb:hover {
-      transform: scale(1.2);
-      box-shadow: 0 2px 8px rgba(13, 79, 79, 0.3);
-    }
-
-    .radius-value {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--primary);
-      min-width: 45px;
-      text-align: right;
-    }
-
-    /* SCREEN 5: Notification Fired */
-    .notification-state {
-      text-align: center;
-    }
-
-    .notification-items {
-      background: #f9f9f9;
-      border-radius: 12px;
-      padding: 16px;
-      margin: 20px 0;
-      text-align: left;
-    }
-
-    .notification-items-title {
-      font-size: 13px;
-      font-weight: 600;
-      color: var(--text-light);
-      margin-bottom: 8px;
-    }
-
-    .notification-items-list {
-      font-size: 14px;
-      color: var(--text);
-      line-height: 1.8;
-    }
-
-    /* SCREEN 6: Rating */
-    .rating-container {
-      text-align: center;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-
-    .thank-you-icon {
-      font-size: 64px;
-      margin-bottom: 20px;
-    }
-
-    .rating-stars {
-      display: flex;
-      justify-content: center;
-      gap: 12px;
-      margin: 20px 0;
-      font-size: 32px;
-    }
-
-    .rating-star {
-      cursor: pointer;
-      transition: all 0.2s ease;
-      opacity: 0.5;
-    }
-
-    .rating-star:hover {
-      opacity: 0.8;
-      transform: scale(1.1);
-    }
-
-    .rating-star.selected {
-      opacity: 1;
-    }
+    /* Rating */
+    .rating-container { text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .thank-you-icon { font-size: 64px; margin-bottom: 20px; }
+    .rating-stars { display: flex; justify-content: center; gap: 12px; margin: 20px 0; font-size: 32px; }
+    .rating-star { cursor: pointer; transition: all 0.2s ease; opacity: 0.5; }
+    .rating-star:hover { opacity: 0.8; transform: scale(1.1); }
+    .rating-star.selected { opacity: 1; }
 
     .email-input {
       width: 100%;
@@ -704,64 +360,37 @@
       padding: 12px;
       font-size: 14px;
       margin: 20px 0;
-      transition: border-color 0.3s ease;
     }
+    .email-input:focus { outline: none; border-color: var(--primary); }
 
-    .email-input:focus {
-      outline: none;
-      border-color: var(--primary);
-    }
+    .hidden { display: none !important; }
 
-    .button-large {
-      margin-top: 16px;
+    /* Loading spinner */
+    .spinner {
+      width: 20px;
+      height: 20px;
+      border: 3px solid rgba(255,255,255,0.3);
+      border-top: 3px solid white;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      display: inline-block;
     }
-
-    /* Utility Classes */
-    .hidden {
-      display: none !important;
-    }
-
-    .text-center {
-      text-align: center;
-    }
-
-    .mt-auto {
-      margin-top: auto;
-    }
+    @keyframes spin { to { transform: rotate(360deg); } }
 
     @media (max-height: 800px) {
-      .screen-content {
-        padding: 20px 24px;
-      }
-
-      .welcome-header {
-        margin-bottom: 24px;
-      }
-
-      .hotel-name {
-        font-size: 22px;
-      }
-
-      .app-logo {
-        font-size: 48px;
-        margin: 12px 0;
-      }
-
-      .tagline {
-        font-size: 18px;
-        margin-bottom: 8px;
-      }
-
-      .subtitle {
-        font-size: 13px;
-        margin-bottom: 20px;
-      }
+      .screen-content { padding: 20px 24px; }
+      .welcome-header { margin-bottom: 24px; }
+      .hotel-name { font-size: 22px; }
+      .app-logo { font-size: 48px; margin: 12px 0; }
+      .tagline { font-size: 18px; margin-bottom: 8px; }
+      .subtitle { font-size: 13px; margin-bottom: 20px; }
     }
   </style>
 </head>
 <body>
   <div class="app-container">
     <div class="phone-frame">
+
       <!-- SCREEN 1: Welcome -->
       <div class="screen active" id="screen-welcome">
         <div class="screen-content">
@@ -771,60 +400,36 @@
             <div class="tagline">DontForget</div>
             <div class="subtitle">Never leave anything behind</div>
           </div>
-
-          <p class="subtitle">Set a quick reminder for your belongings and we'll alert you before you leave.</p>
-
-          <button class="button-primary" onclick="app.goToScreen('permissions')">
+          <p class="subtitle">Set a quick reminder for your belongings and we'll text you before you leave.</p>
+          <button class="button-primary" onclick="app.goToScreen('phone')" style="width:100%;">
             <span>Get Started</span>
           </button>
-
           <div class="install-banner" id="install-banner" onclick="app.requestInstall()">
-            📲 Add to Home Screen for quick access
+            Add to Home Screen for quick access
           </div>
-
           <div class="powered-by">Powered by DontForget</div>
         </div>
       </div>
 
-      <!-- SCREEN 2: Permissions -->
-      <div class="screen" id="screen-permissions">
+      <!-- SCREEN 2: Phone Number -->
+      <div class="screen" id="screen-phone">
         <div class="screen-content">
-          <h2 class="screen-header">Quick Setup</h2>
+          <h2 class="screen-header">Your Phone Number</h2>
+          <p class="screen-subheader">We'll text you a reminder when you leave your room area. No app download, no browser permissions — just a simple SMS.</p>
 
-          <!-- Notifications Card -->
-          <div class="permission-card" id="notification-card">
-            <div class="permission-header">
-              <div class="permission-icon">🔔</div>
-              <div class="permission-title">Allow Notifications</div>
-              <div class="permission-status" id="notification-status"></div>
-            </div>
-            <p class="permission-description">So we can remind you about your items when you leave</p>
-            <button class="permission-button" id="btn-notify" onclick="app.requestNotificationPermission()">
-              Request Permission
-            </button>
-            <div class="permission-warning" id="notification-warning">
-              ⚠️ You can enable this later in your browser settings
-            </div>
+          <div class="phone-input-group">
+            <label for="phone-number">Mobile Number</label>
+            <input type="tel" class="phone-input" id="phone-number" placeholder="(555) 123-4567" autocomplete="tel">
+            <p class="phone-note">We'll only use this to send your checkout reminder. Your number is never stored or shared.</p>
           </div>
 
-          <!-- Location Card -->
-          <div class="permission-card" id="location-card">
-            <div class="permission-header">
-              <div class="permission-icon">📍</div>
-              <div class="permission-title">Allow Location Access</div>
-              <div class="permission-status" id="location-status"></div>
-            </div>
-            <p class="permission-description">So we know when you've left your room area</p>
-            <button class="permission-button" id="btn-location" onclick="app.requestLocationPermission()">
-              Request Permission
-            </button>
-            <div class="permission-warning" id="location-warning">
-              ⚠️ DontForget works best with location enabled. You can enable this in your browser settings.
-            </div>
+          <div class="sms-preview">
+            <div class="sms-preview-title">What you'll receive:</div>
+            <div class="sms-preview-body">"DontForget! Before you leave The Grand Meridian (Room 412), make sure you have: Phone Charger, Laptop, Medications. Have a great trip!"</div>
           </div>
 
-          <div class="permissions-footer">
-            <button class="button-primary" onclick="app.goToScreen('checklist')" style="width: 100%;">
+          <div style="margin-top:auto;">
+            <button class="button-primary" id="btn-phone-continue" onclick="app.submitPhone()" style="width:100%;" disabled>
               Continue
             </button>
           </div>
@@ -835,6 +440,7 @@
       <div class="screen" id="screen-checklist">
         <div class="screen-content">
           <h2 class="screen-header">What did you bring?</h2>
+          <p class="screen-subheader">Tap everything you want to be reminded about.</p>
 
           <div class="items-grid" id="items-grid"></div>
 
@@ -847,7 +453,7 @@
             Selected: <strong id="selected-count">0</strong> items
           </div>
 
-          <button class="button-primary" id="btn-activate" onclick="app.goToScreen('monitoring')" disabled style="width: 100%;">
+          <button class="button-primary" id="btn-activate" onclick="app.activateReminder()" disabled style="width:100%;">
             Activate My Reminder
           </button>
         </div>
@@ -862,6 +468,10 @@
             <div class="room-number" id="room-number">Room 412</div>
           </div>
 
+          <div class="sms-indicator">
+            <div class="sms-indicator-text" id="sms-target">SMS reminder will be sent to (555) 123-4567</div>
+          </div>
+
           <div class="items-summary">
             <div class="items-summary-title">Your Items:</div>
             <div class="items-summary-list" id="monitoring-items-list"></div>
@@ -873,12 +483,12 @@
               <span id="distance-display">Initializing location...</span>
             </div>
             <div class="status-message success" id="status-message">
-              You're in range — we'll alert you when you leave
+              You're in range — we'll text you when you leave
             </div>
           </div>
 
           <div class="settings-section">
-            <div class="settings-title">⚙️ Geofence Radius</div>
+            <div class="settings-title">Geofence Radius</div>
             <div class="slider-container">
               <input type="range" class="slider" id="radius-slider" min="15" max="100" value="30" oninput="app.updateRadius(this.value)">
               <span class="radius-value" id="radius-value">30m</span>
@@ -886,33 +496,34 @@
           </div>
 
           <div class="controls-group">
-            <button class="button-primary button-small" onclick="app.testNotification()">
-              🔔 Test Notification
+            <button class="button-primary button-small" id="btn-test-sms" onclick="app.testSMS()">
+              Send Test SMS
             </button>
             <button class="button-secondary button-small" onclick="app.goToScreen('checklist')">
-              ✏️ Edit Items
+              Edit Items
             </button>
           </div>
         </div>
       </div>
 
-      <!-- SCREEN 5: Notification Fired -->
+      <!-- SCREEN 5: SMS Sent -->
       <div class="screen" id="screen-fired">
         <div class="screen-content">
           <div class="notification-state">
-            <div class="status-title">We just sent you a reminder!</div>
-            <p style="color: var(--text-light); margin-top: 12px;">Make sure you have everything with you</p>
+            <div class="status-title">We just texted you a reminder!</div>
+            <div class="sms-sent-badge">SMS Sent</div>
+            <p style="color: var(--text-light); margin-top: 12px;">Check your phone — make sure you have everything.</p>
 
             <div class="notification-items">
               <div class="notification-items-title">Your Items:</div>
               <div class="notification-items-list" id="fired-items-list"></div>
             </div>
 
-            <button class="button-primary" onclick="app.goToScreen('rating')" style="width: 100%; margin-bottom: 12px;">
-              ✓ Got Everything
+            <button class="button-primary" onclick="app.goToScreen('rating')" style="width:100%; margin-bottom:12px;">
+              Got Everything
             </button>
-            <button class="button-secondary" onclick="app.returnToMonitoring()" style="width: 100%;">
-              ← Go Back to Room
+            <button class="button-secondary" onclick="app.returnToMonitoring()" style="width:100%;">
+              Go Back to Room
             </button>
           </div>
         </div>
@@ -922,20 +533,19 @@
       <div class="screen" id="screen-rating">
         <div class="screen-content">
           <div class="rating-container">
-            <div class="thank-you-icon">🙏</div>
+            <div class="thank-you-icon">&#x1F64F;</div>
             <div class="status-title">Thanks for using DontForget!</div>
             <p style="color: var(--text-light); margin-bottom: 12px;">How was your stay at The Grand Meridian?</p>
 
             <div class="rating-stars" id="rating-stars"></div>
 
             <input type="email" class="email-input" id="email-input" placeholder="your@email.com (optional)">
-            <p style="font-size: 13px; color: var(--text-light); margin: 8px 0;">Would you like reminders at your next hotel?</p>
+            <p style="font-size:13px; color:var(--text-light); margin:8px 0;">Want reminders at your next hotel?</p>
 
-            <button class="button-primary button-large" onclick="app.submitRating()" style="width: 100%;">
+            <button class="button-primary" onclick="app.submitRating()" style="width:100%;">
               Submit & Finish
             </button>
-
-            <div class="powered-by" style="margin-top: 24px;">Powered by DontForget</div>
+            <div class="powered-by" style="margin-top:24px;">Powered by DontForget</div>
           </div>
         </div>
       </div>
@@ -943,12 +553,15 @@
   </div>
 
   <script>
-    // Geofence Monitor Class
+    // ─── CONFIG ───
+    const API_BASE = 'https://dontforget-backend-production.up.railway.app';
+
+    // ─── Geofence Monitor ───
     class GeofenceMonitor {
       constructor() {
         this.anchorLat = null;
         this.anchorLng = null;
-        this.radius = 30; // meters
+        this.radius = 30;
         this.watchId = null;
         this.hasTriggered = false;
         this.onDistanceUpdate = null;
@@ -956,44 +569,24 @@
         this.onReturnToZone = null;
       }
 
-      setAnchor(lat, lng) {
-        this.anchorLat = lat;
-        this.anchorLng = lng;
-      }
+      setAnchor(lat, lng) { this.anchorLat = lat; this.anchorLng = lng; }
 
       startMonitoring() {
         if (!navigator.geolocation) return false;
-
         this.watchId = navigator.geolocation.watchPosition(
-          (position) => {
-            const distance = this.calculateDistance(
-              this.anchorLat,
-              this.anchorLng,
-              position.coords.latitude,
-              position.coords.longitude
-            );
-            const accuracy = position.coords.accuracy;
-
-            if (this.onDistanceUpdate) {
-              this.onDistanceUpdate(distance, accuracy);
-            }
-
-            if (distance > this.radius && !this.hasTriggered) {
+          (pos) => {
+            const dist = this.calculateDistance(this.anchorLat, this.anchorLng, pos.coords.latitude, pos.coords.longitude);
+            if (this.onDistanceUpdate) this.onDistanceUpdate(dist, pos.coords.accuracy);
+            if (dist > this.radius && !this.hasTriggered) {
               this.hasTriggered = true;
               if (this.onGeofenceBreach) this.onGeofenceBreach();
-            } else if (distance <= this.radius && this.hasTriggered) {
+            } else if (dist <= this.radius && this.hasTriggered) {
               this.hasTriggered = false;
               if (this.onReturnToZone) this.onReturnToZone();
             }
           },
-          (error) => {
-            console.error('Geolocation error:', error);
-          },
-          {
-            enableHighAccuracy: true,
-            maximumAge: 5000,
-            timeout: 10000
-          }
+          (err) => console.error('Geolocation error:', err),
+          { enableHighAccuracy: true, maximumAge: 5000, timeout: 10000 }
         );
         return true;
       }
@@ -1005,42 +598,31 @@
         }
       }
 
-      // Haversine formula for distance calculation
       calculateDistance(lat1, lon1, lat2, lon2) {
-        const R = 6371e3; // Earth's radius in meters
-        const φ1 = (lat1 * Math.PI) / 180;
-        const φ2 = (lat2 * Math.PI) / 180;
-        const Δφ = ((lat2 - lat1) * Math.PI) / 180;
-        const Δλ = ((lon2 - lon1) * Math.PI) / 180;
-
-        const a =
-          Math.sin(Δφ / 2) * Math.sin(Δφ / 2) +
-          Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) * Math.sin(Δλ / 2);
-
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        return R * c;
+        const R = 6371e3;
+        const p1 = (lat1 * Math.PI) / 180, p2 = (lat2 * Math.PI) / 180;
+        const dp = ((lat2 - lat1) * Math.PI) / 180;
+        const dl = ((lon2 - lon1) * Math.PI) / 180;
+        const a = Math.sin(dp/2)**2 + Math.cos(p1)*Math.cos(p2)*Math.sin(dl/2)**2;
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
       }
 
-      setRadius(meters) {
-        this.radius = meters;
-      }
-
-      getRadius() {
-        return this.radius;
-      }
+      setRadius(m) { this.radius = m; }
     }
 
-    // Main App Class
+    // ─── Main App ───
     const app = {
       geofence: new GeofenceMonitor(),
       currentScreen: 'welcome',
       selectedItems: [],
       customItems: [],
+      phoneNumber: '',
+      sessionId: null,
       roomNumber: '412',
+      hotelName: 'The Grand Meridian',
       deferredPrompt: null,
       selectedRating: 0,
 
-      // Preload items
       items: [
         { id: 1, emoji: '📱', label: 'Phone Charger' },
         { id: 2, emoji: '💊', label: 'Medications' },
@@ -1056,25 +638,27 @@
         { id: 12, emoji: '💍', label: 'Jewelry/Valuables' }
       ],
 
-      async init() {
-        this.registerServiceWorker();
+      init() {
         this.setupInstallPrompt();
         this.renderItems();
         this.renderRatingStars();
-        this.checkPermissionStatus();
-      },
+        // Enable phone continue button on input
+        document.getElementById('phone-number').addEventListener('input', (e) => {
+          const val = e.target.value.replace(/\D/g, '');
+          document.getElementById('btn-phone-continue').disabled = val.length < 10;
+        });
 
-      registerServiceWorker() {
-        if ('serviceWorker' in navigator) {
-          navigator.serviceWorker
-            .register('/sw.js')
-            .then((reg) => {
-              console.log('Service Worker registered:', reg);
-            })
-            .catch((err) => {
-              console.error('Service Worker registration failed:', err);
-            });
+        // Parse URL params (hotel can pre-fill room, hotel name, phone)
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('room')) this.roomNumber = params.get('room');
+        if (params.get('hotel')) this.hotelName = params.get('hotel');
+        if (params.get('phone')) {
+          document.getElementById('phone-number').value = params.get('phone');
+          document.getElementById('btn-phone-continue').disabled = false;
         }
+
+        // Update hotel name in UI
+        document.querySelector('.hotel-name').textContent = this.hotelName;
       },
 
       setupInstallPrompt() {
@@ -1083,216 +667,110 @@
           this.deferredPrompt = e;
           document.getElementById('install-banner').classList.add('show');
         });
-
-        window.addEventListener('appinstalled', () => {
-          console.log('App installed');
-          document.getElementById('install-banner').classList.remove('show');
-          this.deferredPrompt = null;
-        });
       },
 
       requestInstall() {
         if (this.deferredPrompt) {
           this.deferredPrompt.prompt();
-          this.deferredPrompt.userChoice.then((choiceResult) => {
-            if (choiceResult.outcome === 'accepted') {
-              console.log('App installation accepted');
-            }
-            this.deferredPrompt = null;
-          });
+          this.deferredPrompt = null;
         }
       },
 
-      async requestNotificationPermission() {
-        if (!('Notification' in window)) {
-          alert('This browser does not support notifications');
+      submitPhone() {
+        const raw = document.getElementById('phone-number').value;
+        const digits = raw.replace(/\D/g, '');
+        if (digits.length < 10) {
+          alert('Please enter a valid phone number');
           return;
         }
+        this.phoneNumber = raw;
 
-        const permission = await Notification.requestPermission();
-        this.updatePermissionUI('notification', permission);
-      },
-
-      async requestLocationPermission() {
-        if (!navigator.geolocation) {
-          alert('This browser does not support geolocation');
-          return;
+        // Request location silently
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              this.geofence.setAnchor(pos.coords.latitude, pos.coords.longitude);
+              console.log('Location anchor set');
+            },
+            (err) => console.warn('Location unavailable:', err),
+            { enableHighAccuracy: true }
+          );
         }
 
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const lat = position.coords.latitude;
-            const lng = position.coords.longitude;
-            this.geofence.setAnchor(lat, lng);
-            localStorage.setItem('anchorLat', lat);
-            localStorage.setItem('anchorLng', lng);
-            this.updatePermissionUI('location', 'granted');
-          },
-          (error) => {
-            console.error('Location error:', error);
-            this.updatePermissionUI('location', 'denied');
-          }
-        );
+        this.goToScreen('checklist');
       },
 
-      checkPermissionStatus() {
-        // Check notification permission
-        if ('Notification' in window) {
-          const notifyStatus = Notification.permission;
-          this.updatePermissionUI('notification', notifyStatus);
-        }
-
-        // Check location (can't directly check, but we can check if anchor is set)
-        const savedLat = localStorage.getItem('anchorLat');
-        if (savedLat) {
-          this.updatePermissionUI('location', 'granted');
-        }
-      },
-
-      updatePermissionUI(type, permission) {
-        const isGranted = permission === 'granted';
-        const cardId = type === 'notification' ? 'notification-card' : 'location-card';
-        const statusId = type === 'notification' ? 'notification-status' : 'location-status';
-        const warningId = type === 'notification' ? 'notification-warning' : 'location-warning';
-        const btnId = type === 'notification' ? 'btn-notify' : 'btn-location';
-
-        const card = document.getElementById(cardId);
-        const status = document.getElementById(statusId);
-        const warning = document.getElementById(warningId);
-        const btn = document.getElementById(btnId);
-
-        if (isGranted) {
-          card.classList.add('granted');
-          card.classList.remove('denied');
-          status.textContent = '✓';
-          status.style.color = '#4CAF50';
-          warning.classList.remove('show');
-          btn.disabled = true;
-          btn.textContent = 'Granted ✓';
-        } else if (permission === 'denied') {
-          card.classList.add('denied');
-          card.classList.remove('granted');
-          status.textContent = '✗';
-          status.style.color = '#FF9800';
-          warning.classList.add('show');
-          btn.disabled = true;
-          btn.textContent = 'Permission Denied';
-        }
-      },
-
-      renderItems() {
-        const grid = document.getElementById('items-grid');
-        grid.innerHTML = '';
-
-        this.items.forEach((item) => {
-          const card = document.createElement('div');
-          card.className = 'item-card';
-          card.innerHTML = `
-            <div class="item-emoji">${item.emoji}</div>
-            <div class="item-label">${item.label}</div>
-          `;
-
-          card.addEventListener('click', () => this.toggleItem(item.id));
-
-          if (this.selectedItems.includes(item.id)) {
-            card.classList.add('selected');
-          }
-
-          grid.appendChild(card);
-        });
-
-        this.updateProgress();
-      },
-
-      toggleItem(itemId) {
-        const index = this.selectedItems.indexOf(itemId);
-        if (index > -1) {
-          this.selectedItems.splice(index, 1);
-        } else {
-          this.selectedItems.push(itemId);
-        }
-        this.renderItems();
-      },
-
-      addCustomItem() {
-        const input = document.getElementById('custom-item-input');
-        const value = input.value.trim();
-
-        if (value) {
-          const id = 'custom-' + Date.now();
-          this.customItems.push({ id, label: value });
-          this.selectedItems.push(id);
-          input.value = '';
-          this.renderItems();
-        }
-      },
-
-      updateProgress() {
-        document.getElementById('selected-count').textContent = this.selectedItems.length;
+      async activateReminder() {
         const btn = document.getElementById('btn-activate');
-        btn.disabled = this.selectedItems.length === 0;
-      },
+        btn.innerHTML = '<span class="spinner"></span> Activating...';
+        btn.disabled = true;
 
-      getSelectedItemLabels() {
-        const labels = [];
+        const itemLabels = this.getSelectedItemLabels();
 
-        this.selectedItems.forEach((id) => {
-          if (typeof id === 'string' && id.startsWith('custom-')) {
-            const custom = this.customItems.find((item) => item.id === id);
-            if (custom) labels.push(custom.label);
-          } else {
-            const item = this.items.find((item) => item.id === id);
-            if (item) labels.push(`${item.emoji} ${item.label}`);
+        // Register session with backend
+        try {
+          const resp = await fetch(`${API_BASE}/api/sessions`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: this.phoneNumber,
+              items: itemLabels,
+              room: this.roomNumber,
+              hotel: this.hotelName
+            })
+          });
+          const data = await resp.json();
+          if (data.sessionId) {
+            this.sessionId = data.sessionId;
+            console.log('Session registered:', this.sessionId);
           }
-        });
+        } catch (err) {
+          console.warn('Backend unavailable, will send direct SMS on breach:', err);
+        }
 
-        return labels;
+        btn.innerHTML = 'Activate My Reminder';
+        btn.disabled = false;
+
+        this.goToScreen('monitoring');
       },
 
-      goToScreen(screenName) {
-        // Hide all screens
-        document.querySelectorAll('.screen').forEach((screen) => {
-          screen.classList.remove('active');
-        });
+      goToScreen(name) {
+        document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+        document.getElementById('screen-' + name).classList.add('active');
+        this.currentScreen = name;
 
-        // Show the selected screen
-        document.getElementById('screen-' + screenName).classList.add('active');
-        this.currentScreen = screenName;
-
-        // Handle screen-specific logic
-        if (screenName === 'monitoring') {
-          this.startMonitoring();
-        } else if (screenName === 'checklist' && this.currentScreen === 'monitoring') {
-          this.geofence.stopMonitoring();
-        }
+        if (name === 'monitoring') this.startMonitoring();
       },
 
       startMonitoring() {
-        const anchorLat = localStorage.getItem('anchorLat');
-        const anchorLng = localStorage.getItem('anchorLng');
-
-        if (!anchorLat || !anchorLng) {
-          alert('Location permission required. Please go back and grant location access.');
-          this.goToScreen('permissions');
-          return;
+        // If we don't have a location anchor yet, request now
+        if (!this.geofence.anchorLat) {
+          navigator.geolocation.getCurrentPosition(
+            (pos) => {
+              this.geofence.setAnchor(pos.coords.latitude, pos.coords.longitude);
+              this._beginMonitoring();
+            },
+            (err) => {
+              alert('Location access is needed to monitor your room area. Please enable location in your browser settings.');
+            },
+            { enableHighAccuracy: true }
+          );
+        } else {
+          this._beginMonitoring();
         }
+      },
 
-        this.geofence.setAnchor(parseFloat(anchorLat), parseFloat(anchorLng));
+      _beginMonitoring() {
         this.updateMonitoringDisplay();
 
-        this.geofence.onDistanceUpdate = (distance, accuracy) => {
-          this.updateDistanceDisplay(distance, accuracy);
-        };
+        // Mask phone for display
+        const digits = this.phoneNumber.replace(/\D/g, '');
+        const masked = '(' + digits.slice(0,3) + ') ' + digits.slice(3,6) + '-' + digits.slice(6,10);
+        document.getElementById('sms-target').textContent = 'SMS reminder will be sent to ' + masked;
 
-        this.geofence.onGeofenceBreach = () => {
-          this.fireReminder();
-          this.goToScreen('fired');
-        };
-
-        this.geofence.onReturnToZone = () => {
-          // Reset trigger for next departure
-        };
-
+        this.geofence.onDistanceUpdate = (dist, acc) => this.updateDistanceDisplay(dist, acc);
+        this.geofence.onGeofenceBreach = () => this.fireReminder();
+        this.geofence.onReturnToZone = () => {};
         this.geofence.startMonitoring();
       },
 
@@ -1303,139 +781,176 @@
       },
 
       updateDistanceDisplay(distance, accuracy) {
-        const displayEl = document.getElementById('distance-display');
-        const statusEl = document.getElementById('status-message');
-        const geofenceEl = document.getElementById('geofence-status');
+        const el = document.getElementById('distance-display');
+        const msg = document.getElementById('status-message');
+        const geo = document.getElementById('geofence-status');
         const dot = document.getElementById('status-dot');
+        const d = Math.round(distance);
+        const r = this.geofence.radius;
+        const pct = distance / r;
 
-        const distanceM = Math.round(distance);
-        const radius = this.geofence.radius;
-        const percentage = distance / radius;
-
-        displayEl.textContent = `📍 You're currently ${distanceM}m from your room • Geofence: ${radius}m`;
-
-        geofenceEl.classList.remove('warning', 'alert');
+        el.textContent = 'You\'re ' + d + 'm from your room (fence: ' + r + 'm)';
+        geo.classList.remove('warning', 'alert');
         dot.classList.remove('warning', 'alert');
 
-        if (distance > radius) {
-          // Already breached
-          geofenceEl.classList.add('alert');
+        if (distance > r) {
+          geo.classList.add('alert');
           dot.classList.add('alert');
-          statusEl.classList.remove('success', 'warning');
-          statusEl.className = 'status-message';
-          statusEl.style.color = '#F44336';
-          statusEl.textContent = 'You have left your room area!';
-        } else if (percentage > 0.7) {
-          // Warning zone (70% of radius)
-          geofenceEl.classList.add('warning');
+          msg.className = 'status-message';
+          msg.style.color = '#F44336';
+          msg.textContent = 'You have left your room area!';
+        } else if (pct > 0.7) {
+          geo.classList.add('warning');
           dot.classList.add('warning');
-          statusEl.classList.remove('success');
-          statusEl.classList.add('warning');
-          statusEl.textContent = 'You\'re moving away from your room...';
+          msg.className = 'status-message warning';
+          msg.textContent = 'You\'re moving away from your room...';
         } else {
-          // Safe zone
-          geofenceEl.classList.remove('warning', 'alert');
-          dot.classList.remove('warning', 'alert');
-          statusEl.classList.add('success');
-          statusEl.classList.remove('warning');
-          statusEl.textContent = 'You\'re in range — we\'ll alert you when you leave';
+          msg.className = 'status-message success';
+          msg.textContent = 'You\'re in range — we\'ll text you when you leave';
         }
       },
 
-      updateRadius(value) {
-        value = parseInt(value);
-        this.geofence.setRadius(value);
-        document.getElementById('radius-value').textContent = value + 'm';
+      updateRadius(val) {
+        this.geofence.setRadius(parseInt(val));
+        document.getElementById('radius-value').textContent = val + 'm';
       },
 
-      testNotification() {
+      async fireReminder() {
         const items = this.getSelectedItemLabels();
-        this.fireReminder(items);
-        alert('Notification sent! Check your system notifications.');
+
+        try {
+          const resp = await fetch(`${API_BASE}/api/remind`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              sessionId: this.sessionId,
+              phone: this.phoneNumber,
+              items: items,
+              room: this.roomNumber,
+              hotel: this.hotelName
+            })
+          });
+          const data = await resp.json();
+          console.log('SMS reminder sent:', data);
+        } catch (err) {
+          console.error('Failed to send SMS:', err);
+        }
+
+        this.goToScreen('fired');
       },
 
-      fireReminder(items) {
-        const itemList = items && items.length ? items.join(', ') : this.getSelectedItemLabels().join(', ');
+      async testSMS() {
+        const btn = document.getElementById('btn-test-sms');
+        btn.innerHTML = '<span class="spinner"></span> Sending...';
+        btn.disabled = true;
 
-        if (Notification.permission === 'granted') {
-          if ('serviceWorker' in navigator && navigator.serviceWorker.controller) {
-            navigator.serviceWorker.ready.then((registration) => {
-              registration.showNotification('DontForget — Before you go!', {
-                body: `Make sure you have: ${itemList}`,
-                icon: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230D4F4F"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="white">✓</text></svg>',
-                badge: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" rx="20" fill="%230D4F4F"/><text x="50" y="65" font-size="50" text-anchor="middle" fill="white">✓</text></svg>',
-                vibrate: [200, 100, 200, 100, 200],
-                tag: 'dontforget-reminder',
-                renotify: true,
-                requireInteraction: true,
-                actions: [
-                  { action: 'got-it', title: 'Got Everything ✓' },
-                  { action: 'go-back', title: 'Go Back' }
-                ]
-              });
-            });
+        try {
+          const resp = await fetch(`${API_BASE}/api/remind`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              phone: this.phoneNumber,
+              items: this.getSelectedItemLabels(),
+              room: this.roomNumber,
+              hotel: this.hotelName
+            })
+          });
+          const data = await resp.json();
+          if (data.success) {
+            btn.innerHTML = 'SMS Sent!';
+            setTimeout(() => { btn.innerHTML = 'Send Test SMS'; btn.disabled = false; }, 3000);
           } else {
-            // Fallback
-            new Notification('DontForget — Before you go!', {
-              body: `Make sure you have: ${itemList}`,
-              requireInteraction: true
-            });
+            btn.innerHTML = 'Failed — retry?';
+            btn.disabled = false;
           }
+        } catch (err) {
+          console.error('Test SMS failed:', err);
+          btn.innerHTML = 'Server offline';
+          setTimeout(() => { btn.innerHTML = 'Send Test SMS'; btn.disabled = false; }, 3000);
         }
       },
 
       returnToMonitoring() {
-        // Reset the trigger so it can fire again on next departure
         this.geofence.hasTriggered = false;
         this.goToScreen('monitoring');
       },
 
+      renderItems() {
+        const grid = document.getElementById('items-grid');
+        grid.innerHTML = '';
+        this.items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'item-card' + (this.selectedItems.includes(item.id) ? ' selected' : '');
+          card.innerHTML = '<div class="item-emoji">' + item.emoji + '</div><div class="item-label">' + item.label + '</div>';
+          card.addEventListener('click', () => this.toggleItem(item.id));
+          grid.appendChild(card);
+        });
+        this.updateProgress();
+      },
+
+      toggleItem(id) {
+        const i = this.selectedItems.indexOf(id);
+        if (i > -1) this.selectedItems.splice(i, 1);
+        else this.selectedItems.push(id);
+        this.renderItems();
+      },
+
+      addCustomItem() {
+        const input = document.getElementById('custom-item-input');
+        const val = input.value.trim();
+        if (val) {
+          const id = 'custom-' + Date.now();
+          this.customItems.push({ id, label: val });
+          this.selectedItems.push(id);
+          input.value = '';
+          this.renderItems();
+        }
+      },
+
+      updateProgress() {
+        document.getElementById('selected-count').textContent = this.selectedItems.length;
+        document.getElementById('btn-activate').disabled = this.selectedItems.length === 0;
+      },
+
+      getSelectedItemLabels() {
+        return this.selectedItems.map(id => {
+          if (typeof id === 'string' && id.startsWith('custom-')) {
+            const c = this.customItems.find(i => i.id === id);
+            return c ? c.label : '';
+          }
+          const item = this.items.find(i => i.id === id);
+          return item ? item.label : '';
+        }).filter(Boolean);
+      },
+
       renderRatingStars() {
         const container = document.getElementById('rating-stars');
+        container.innerHTML = '';
         for (let i = 1; i <= 5; i++) {
           const star = document.createElement('div');
-          star.className = 'rating-star';
-          star.textContent = '★';
-          star.addEventListener('click', () => {
-            this.selectedRating = i;
-            this.renderRatingStars();
-          });
-          if (i <= this.selectedRating) {
-            star.classList.add('selected');
-          }
+          star.className = 'rating-star' + (i <= this.selectedRating ? ' selected' : '');
+          star.textContent = '\u2605';
+          star.addEventListener('click', () => { this.selectedRating = i; this.renderRatingStars(); });
           container.appendChild(star);
         }
       },
 
       submitRating() {
         const email = document.getElementById('email-input').value.trim();
-        console.log('Rating submitted:', {
-          rating: this.selectedRating,
-          email: email,
-          items: this.getSelectedItemLabels()
-        });
-
-        if (email) {
-          // In production, send to backend
-          alert(`Thanks! We'll send reminders to ${email}`);
-        } else {
-          alert('Thanks for using DontForget!');
-        }
-
-        // Reset and go back to welcome
+        console.log('Rating:', { rating: this.selectedRating, email, items: this.getSelectedItemLabels() });
+        alert(email ? 'Thanks! We\'ll send reminders to ' + email : 'Thanks for using DontForget!');
         this.selectedItems = [];
         this.customItems = [];
         this.selectedRating = 0;
+        this.phoneNumber = '';
+        this.sessionId = null;
         this.renderItems();
         this.renderRatingStars();
         this.goToScreen('welcome');
       }
     };
 
-    // Initialize app when DOM is ready
-    document.addEventListener('DOMContentLoaded', () => {
-      app.init();
-    });
+    document.addEventListener('DOMContentLoaded', () => app.init());
   </script>
 </body>
 </html>
