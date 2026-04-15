@@ -415,6 +415,44 @@
       .tagline { font-size: 18px; margin-bottom: 8px; }
       .subtitle { font-size: 13px; margin-bottom: 20px; }
     }
+
+    /* Keep-open banner (shown on monitoring screen) */
+    .keep-open-banner {
+      background: #FFF8E1; border: 1px solid #FFE082; border-radius: 10px;
+      padding: 12px 14px; margin: 0 0 16px 0; display: flex; align-items: flex-start; gap: 10px;
+    }
+    .keep-open-banner .ko-icon { font-size: 20px; line-height: 1; flex-shrink: 0; }
+    .keep-open-banner .ko-text { font-size: 12px; color: #8A6D3B; line-height: 1.4; }
+    .keep-open-banner .ko-text strong { color: #5D4A1E; }
+
+    /* Backgrounded warning (shown if tab is hidden then returns) */
+    .bg-warning {
+      background: #FFEBEE; border: 1px solid #EF9A9A; border-radius: 10px;
+      padding: 12px 14px; margin: 0 0 16px 0; display: none;
+    }
+    .bg-warning.show { display: block; animation: fadeInDown 0.3s ease-out; }
+    .bg-warning-title { font-weight: 600; color: #C62828; font-size: 13px; margin-bottom: 4px; }
+    .bg-warning-text { font-size: 12px; color: #8B2C2C; line-height: 1.4; }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Wake-lock indicator pill */
+    .wake-lock-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: #E8F5E9; color: #2E7D32;
+      font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 12px;
+      margin-top: 8px;
+    }
+    .wake-lock-pill .wl-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: #2E7D32;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
   </style>
 </head>
 <body>
@@ -496,6 +534,20 @@
             <div class="checkmark-icon">✓</div>
             <div class="status-title">Your Reminder Is Active!</div>
             <div class="room-number" id="room-number">Room 412</div>
+            <div class="wake-lock-pill" id="wake-lock-pill" style="display:none;">
+              <span class="wl-dot"></span>
+              <span>Screen will stay awake</span>
+            </div>
+          </div>
+
+          <div class="bg-warning" id="bg-warning">
+            <div class="bg-warning-title">⚠️ Monitoring was paused</div>
+            <div class="bg-warning-text">Your phone locked or the tab lost focus, so we stopped tracking your location. It's back on now — just keep this screen visible.</div>
+          </div>
+
+          <div class="keep-open-banner">
+            <div class="ko-icon">📱</div>
+            <div class="ko-text"><strong>Keep this screen open</strong> until you leave the room. If your phone locks or you switch apps, tracking pauses. We've requested to keep the screen awake.</div>
           </div>
 
           <div class="sms-indicator">
@@ -639,6 +691,8 @@
     }
 
     // ─── Main App ───
+    const STORAGE_KEY = 'dontforget-state-v1';
+
     const app = {
       geofence: new GeofenceMonitor(),
       currentScreen: 'welcome',
@@ -650,6 +704,8 @@
       hotelName: 'The Grand Meridian',
       deferredPrompt: null,
       selectedRating: 0,
+      wakeLockSentinel: null,
+      visibilityHandlerAttached: false,
 
       items: [
         { id: 1, emoji: '📱', label: 'Phone Charger' },
@@ -687,6 +743,100 @@
 
         // Update hotel name in UI
         document.querySelector('.hotel-name').textContent = this.hotelName;
+
+        // Restore persisted session (phone, items) if present
+        this.loadPersistedState();
+
+        // Attach visibility listener once (global)
+        if (!this.visibilityHandlerAttached) {
+          document.addEventListener('visibilitychange', () => this.handleVisibilityChange());
+          this.visibilityHandlerAttached = true;
+        }
+      },
+
+      // ─── Persistence ───
+      persistState() {
+        try {
+          const state = {
+            phoneNumber: this.phoneNumber,
+            selectedItems: this.selectedItems,
+            customItems: this.customItems,
+            sessionId: this.sessionId,
+            roomNumber: this.roomNumber,
+            hotelName: this.hotelName
+          };
+          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        } catch (e) { /* ignore quota errors */ }
+      },
+      loadPersistedState() {
+        try {
+          const raw = localStorage.getItem(STORAGE_KEY);
+          if (!raw) return;
+          const s = JSON.parse(raw);
+          if (s.phoneNumber) {
+            this.phoneNumber = s.phoneNumber;
+            const input = document.getElementById('phone-number');
+            if (input && !input.value) {
+              input.value = s.phoneNumber;
+              document.getElementById('btn-phone-continue').disabled = false;
+            }
+          }
+          if (Array.isArray(s.selectedItems)) this.selectedItems = s.selectedItems;
+          if (Array.isArray(s.customItems)) this.customItems = s.customItems;
+          if (s.sessionId) this.sessionId = s.sessionId;
+          if (s.roomNumber) this.roomNumber = s.roomNumber;
+          if (s.hotelName) this.hotelName = s.hotelName;
+          this.renderItems();
+        } catch (e) { /* ignore parse errors */ }
+      },
+      clearPersistedState() {
+        try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+      },
+
+      // ─── Wake Lock ───
+      async requestWakeLock() {
+        try {
+          if ('wakeLock' in navigator) {
+            this.wakeLockSentinel = await navigator.wakeLock.request('screen');
+            document.getElementById('wake-lock-pill').style.display = 'inline-flex';
+            this.wakeLockSentinel.addEventListener('release', () => {
+              // Re-request if we lose it while still monitoring
+              if (this.currentScreen === 'monitoring') {
+                this.requestWakeLock();
+              }
+            });
+          }
+        } catch (e) {
+          console.warn('Wake Lock unavailable:', e);
+        }
+      },
+      async releaseWakeLock() {
+        try {
+          if (this.wakeLockSentinel) {
+            await this.wakeLockSentinel.release();
+            this.wakeLockSentinel = null;
+          }
+          const pill = document.getElementById('wake-lock-pill');
+          if (pill) pill.style.display = 'none';
+        } catch (e) {}
+      },
+
+      // ─── Visibility handling ───
+      handleVisibilityChange() {
+        if (this.currentScreen !== 'monitoring') return;
+        if (document.visibilityState === 'visible') {
+          // Tab back in focus — re-request wake lock (sentinel releases automatically on blur)
+          this.requestWakeLock();
+          // If we were previously hidden, surface the warning so the user knows we paused
+          const warn = document.getElementById('bg-warning');
+          if (warn && this._wasHidden) {
+            warn.classList.add('show');
+            setTimeout(() => warn.classList.remove('show'), 8000);
+          }
+          this._wasHidden = false;
+        } else {
+          this._wasHidden = true;
+        }
       },
 
       setupInstallPrompt() {
@@ -712,6 +862,7 @@
           return;
         }
         this.phoneNumber = raw;
+        this.persistState();
 
         // Request location silently
         if (navigator.geolocation) {
@@ -750,6 +901,7 @@
           const data = await resp.json();
           if (data.sessionId) {
             this.sessionId = data.sessionId;
+            this.persistState();
             console.log('Session registered:', this.sessionId);
           }
         } catch (err) {
@@ -800,6 +952,9 @@
         this.geofence.onGeofenceBreach = () => this.fireReminder();
         this.geofence.onReturnToZone = () => {};
         this.geofence.startMonitoring();
+
+        // Keep the screen awake while monitoring
+        this.requestWakeLock();
       },
 
       updateMonitoringDisplay() {
@@ -886,6 +1041,9 @@
           if (data.success) {
             btn.innerHTML = 'SMS Sent!';
             setTimeout(() => { btn.innerHTML = 'Send Test SMS'; btn.disabled = false; }, 3000);
+            // Show the fired screen so the user sees the confirmation animation
+            this.updateMonitoringDisplay();
+            this.goToScreen('fired');
           } else {
             btn.innerHTML = 'Failed — retry?';
             btn.disabled = false;
@@ -920,6 +1078,7 @@
         if (i > -1) this.selectedItems.splice(i, 1);
         else this.selectedItems.push(id);
         this.renderItems();
+        this.persistState();
       },
 
       addCustomItem() {
@@ -971,6 +1130,11 @@
         this.selectedRating = 0;
         this.phoneNumber = '';
         this.sessionId = null;
+        this.geofence.stopMonitoring();
+        this.geofence.anchorLat = null;
+        this.geofence.anchorLng = null;
+        this.releaseWakeLock();
+        this.clearPersistedState();
         this.renderItems();
         this.renderRatingStars();
         this.goToScreen('welcome');
